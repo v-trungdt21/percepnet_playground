@@ -4,7 +4,7 @@ from scipy import signal
 from scipy.io import wavfile
 import numpy as np
 
-erb_band = EqualRectangularBandwidth(960, 34, 0, 20000)
+erb_band = EqualRectangularBandwidth(34, 0, 20000)
 wav_path = "/home/hp/Downloads/babble_10dB.wav"
 sample_rate, audio_sample = wavfile.read(wav_path)
 
@@ -26,9 +26,10 @@ for i in range(34):
             real = np.real(spectrum[j])
             imag = np.imag(spectrum[j])
             tmp = real * real + imag * imag
-            s += tmp * erb_band.filters[1][j - low_nfft_idx]
+            s += tmp * filter[1][j - low_nfft_idx]
         band.append(s)
     bands.append(np.array(band))
 
 npbands = np.array(bands)
 print(npbands.shape)
+print("Yb(b=0):", npbands[0])
